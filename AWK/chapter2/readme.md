@@ -8,3 +8,10 @@
     当expression为真时，statements被执行一次
     4. /regular expression/ or compound pattern or pattern1,pattern2 { statements } <br>
     当正则被匹配或者复合表达式为真或者多个匹配为真时，执行后面statements
+
+- 将表达式用作模式
+    
+    |运算符|意义|
+    |:------:|:-----:|
+    |< |小于|
+
