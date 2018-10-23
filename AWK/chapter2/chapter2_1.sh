@@ -25,3 +25,25 @@ END {
     printf("\n%10s %6d %5d\n", "TOTAL", area , pop)
 }
 ' ./countries.data > ./countries_beginEnd.data
+
+# 计算亚洲总人口
+awk '
+    $4 == "Asia" {
+        pop += $3
+        n ++
+    }
+END {
+    print "亚洲国家总数:",n,"人口总数:",pop
+}
+' ./countries.data
+
+ # 计算最大人口和国家
+ awk '
+     $3 > maxpop {
+         maxpop = $3
+         country = $1
+     }
+ END {
+     print "最大人口:",maxpop,"所属国家:",country
+ }
+ ' ./countries.data
