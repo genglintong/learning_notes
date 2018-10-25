@@ -135,6 +135,7 @@ continue
 |srand(x)|x为新的随机种子|
 
 - 内建字符串函数
+
 |函数|描述|
 |:-----:|:------:|
 |gsub(r,s)|将$0中的所有出现的r替换为s，返回替换的次数|
@@ -142,3 +143,16 @@ continue
 |index(s,t)|返回字符串t在s中第一次出现的位置，t没有出现，返回0|
 |length(s)|返回s包含的字符个数|
 
+- 流程控制语句
+    - {statements} <br>语句组
+    - if (expression) statements <br> 如果expression为真，执行statements
+    - if (expression) statements else statements <br> 如果expression为真，执行statements,否则执行statements
+    - while (expression) statements <br> 如果expression为真，执行statements;然后重复前面过程
+    - for (expressionl; expression; expression) statements
+    - for (variable in array) statements
+    - do statements while (expression)
+    - break
+    - continue
+    - next
+    - exit
+    - exit expression
