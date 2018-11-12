@@ -43,3 +43,19 @@ git log --shortstat
 # 显示各个提交之间的关系
 git log --graph --oneline
 ```
+
+### 多次提交
+- 三个概念
+    - 工作区：当前版本的本地修改
+    - 暂存区：本地修改后，git add 将本地修改由工作区添加至暂存区
+    - 版本库：暂存区的修改，git commit 将暂存文件由暂存区提交到版本库
+- git status<br> 查看当前工作区所发生的修改 
+- git diff 
+    - git diff --staged <br> 当前版本库与暂存区之间的区别
+    - git diff <br> 暂存区与工作区区别
+- git reset HEAD . <br> 重置某些目录的暂存区 
+- git stash 储藏
+    - git stash <br> 将工作区和暂存区中修改保存到 存储栈
+    - git stash pop <br> 恢复栈顶的储藏修改
+    - git stash lish <br> 查看堆栈中的修改内容
+    - git stash pop stash@{1} <br> 恢复某一次修改
