@@ -149,7 +149,7 @@ max_clients = worker_process * worker_conections / 4<br>
 
 - lua tcp socket connect timed out<br>
     <br>redis 连接超时<br>
-    - 修改方案1-将超时时间设置为20s(原来2s)<br>
+    - 修改方案1-将超时时间设置为20s(原来2s)<br>
     结果: 超时操作明显减少
     - 修改方案2-[使用连接池](!https://www.the5fire.com/golang+redis-vs-nginx+lua+redis.html)<br>
     两W并发 100W请求下 连接池对比<br>
@@ -162,7 +162,8 @@ max_clients = worker_process * worker_conections / 4<br>
     |1000|2579|
     |10000|2252|
     |10000|5106|
-    发现，加大连接池数并没有减少超时，因此采用加大超时时间+设置100连接池(减少资源消耗)。<br>2W并发 100W请求 超时数为0.
+    
+    发现，加大连接池数并没有减少超时，因此采用加大超时时间+设置100连接池(减少资源消耗)。<br>2W并发 100W请求 超时数为0.
 
 - 优化后结果
 
