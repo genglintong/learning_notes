@@ -6,5 +6,6 @@
 ### 413.arithmetic-slices.go
 ### 771.numJewelsInStones.go
 ### 905.Sort_Array_By_Parity.go 
+### 921.minAddToMakeValid.go
 ### 925.isLongPressedName.go
 ### 927.threeEqualParts.go 
