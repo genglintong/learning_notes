@@ -1,9 +1,9 @@
 ## NGINX+LUA+REDIS 高性能服务器搭建
-> 对于传统的服务端程序 （PHP, FASTCGI等）,大多都是通过产生一个请求，有一个进程与之相对应，请求处理结束后，进程销毁释放，所以一些语言都通过常驻进程，线程，线程池等降低资源开销。即使是资源占用最小线程，当并发量超过1K(单台)的时候，操作系统的处理就会开始明显下降，因为有太多的CPU时间都消耗在系统的上下文切换。因此，对于一些**性能要求比较高,并发量较大**的需求，就需要一套高性能的服务区去支撑。<br>
+> 对于传统的服务端程序 （PHP, FASTCGI等）,大多都是通过产生一个请求，有一个进程与之相对应，请求处理结束后，进程销毁释放，所以一些语言都通过常驻进程，线程，线程池等降低资源开销。即使是资源占用最小线程，当并发量超过1K(单台)的时候，操作系统的处理就会开始明显下降，因为有太多的CPU时间都消耗在系统的上下文切换。因此，对于一些**性能要求比较高,并发量较大**的需求，就需要一套高性能的服务区去支撑。<br>
 
 ### NGINX+LUA
 nginx的lua-nginx-module模块将lua嵌入到nginx，让nginx高效的执行lua脚本，**高并发,非阻塞**的处理各种请求。<br>
-Lua内建协程，这样就可以很好的将一步回调转换成顺序调用的形式。ngx_lua在lua中进行IO操作都会委托给Nginx事件模型，实现非阻塞调用。<br>
+Lua内建协程，这样就可以很好的将一步回调转换成顺序调用的形式。ngx_lua在lua中进行IO操作都会委托给Nginx事件模型，实现非阻塞调用。<br>
 每个NginxWorker进程持有一个Lua解释器或者LuaJIT实例，被这个Worker处理的所有请求共享这个实例。每个请求的Context会被Lua轻量级的协程分割，从而保证各个请求是独立的。Ngx_lua 采用“one-conroutine-pre-request”的处理模型，对于每个用户请求，ngx_lua 会唤醒用于执行用户代码处理请求，当请求处理完成这个写成会被销毁。每个协程都有一个独立的全局环境（变量空间），继承于全局共享的、只读的“comman data”。所以，被用户代码注入全局空间的任何变量都不会影响其他请求的处理，并且这些变量在请求处理完成后会被释放，这样就保证所有的用户代码都运行在一个“sandbox”（沙箱），这个沙箱与请求具有相同的生命周期。 得益于Lua协程的支持，ngx_lua在处理10000个并发请求时只需要很少的内存。根据测试，ngx_lua处理每个请求只需要2KB的内存，如果使用LuaJIT则会更少。所以ngx_lua非常适合用于实现可扩展的、高并发的服务。
 
 ### OPENRESTY 安装
@@ -13,7 +13,7 @@ sudo yum install openresty
 ```
 没有 `yum-config-manager` 命令 执行 `sudo yum -y install yum-utils` 安装
 
-执行 `openresty -h` 成功
+执行 `openresty -h` 成功
 
 ### REDIS 安装
 ```
@@ -21,12 +21,12 @@ yum install epel-release
 yum install redis
 
 // 修改redis 配置
-redis-service path/redis.conf &
+redis-service path/redis.conf &
 
 // 测试是否安装成功
 redis-cli
 ```
-### 初试-HelloWorld
+### 初试-HelloWorld
 ```
 // 根目录下 创建项目目录
 mkdir ~/openresty ~/openresty/logs/ ~/openresty/conf/
@@ -110,7 +110,7 @@ ab -n100000 -c10000 http://test.com/api/123
 ab -r # 默认报错
 ```
 
-并发超过1000 会出错
+并发超过1000 会出错
 
 - helloworld接口
 
@@ -139,18 +139,18 @@ ab -r # 默认报错
 
 ### 优化
 - worker_connections 被打满<br>
-[NGINX最大并发max_clients计算](!http://blog.51cto.com/liuqunying/1420556)<br>
+[NGINX最大并发max_clients计算](!http://blog.51cto.com/liuqunying/1420556)<br>
 NGINX作为http服务器时:<br>
 max_clients = worker_process * worker_conections<br>
 NGINX作为反向代理时:<br>
 max_clients = worker_process * worker_conections / 4<br>
 由以上计算得，原来最大clients = 2 * 10240 = 20480
-在测试并发2W以上，会报连接数被打满。修改worker_connnections为20480,解决此问题。
+在测试并发2W以上，会报连接数被打满。修改worker_connnections为20480,解决此问题。
 
 - lua tcp socket connect timed out<br>
     <br>redis 连接超时<br>
-    - 修改方案1-将超时时间设置为20s(原来2s)<br>
-    结果: 超时操作明显减少
+    - 修改方案1-将超时时间设置为20s(原来2s)<br>
+    结果: 超时操作明显减少
     - 修改方案2-[使用连接池](!https://www.the5fire.com/golang+redis-vs-nginx+lua+redis.html)<br>
     两W并发 100W请求下 连接池对比<br>
     
@@ -162,7 +162,8 @@ max_clients = worker_process * worker_conections / 4<br>
     |1000|2579|
     |10000|2252|
     |10000|5106|
-    发现，加大连接池数并没有减少超时，因此采用加大超时时间+设置100连接池(减少资源消耗)。<br>2W并发 100W请求 超时数为0.
+    
+    发现，加大连接池数并没有减少超时，因此采用加大超时时间+设置100连接池(减少资源消耗)。<br>2W并发 100W请求 超时数为0.
 
 - 优化后结果
 
