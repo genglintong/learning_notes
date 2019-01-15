@@ -1,6 +1,7 @@
 ### 001.twoSum.go
 ### 056.mergeIntervals.go
 ### 062.uniquePaths.go
+### 128.longestConsecutive.go
 ### 198.rob.go
 ### 215.findKthLargest.go
 ### 413.arithmetic-slices.go
