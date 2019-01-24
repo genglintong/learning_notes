@@ -3,6 +3,7 @@
 ### 056.mergeIntervals.go
 ### 062.uniquePaths.go
 ### 128.longestConsecutive.go
+### 142.linked-list-cycle-ii.go
 ### 198.rob.go
 ### 215.findKthLargest.go
 ### 268.missing-number.go
