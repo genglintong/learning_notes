@@ -5,6 +5,7 @@
 ### 128.longestConsecutive.go
 ### 198.rob.go
 ### 215.findKthLargest.go
+### 268.missing-number.go
 ### 413.arithmetic-slices.go
 ### 508.findFrequentTreeSum.go
 ### 771.numJewelsInStones.go
